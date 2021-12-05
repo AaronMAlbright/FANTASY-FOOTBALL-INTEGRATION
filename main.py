@@ -22,7 +22,8 @@ def main():
        - User also has option to quit using the program and exit the program
        from the menu
        """
-
+# reference for .capitalize()
+# https://www.geeksforgeeks.org/string-capitalize-python/
     game = "fantasy football "
     program = "Score calculator and Start/Sit Decision program"
     print("Hello " * 2, "! Welcome to the " + game.capitalize() + program,
@@ -33,8 +34,8 @@ def main():
     rb = 0
     te = 0
     flex = 0
-    # Number of roster spots is neccessary in order to calculate the average
-    # score per fantasy player
+    # Number of roster spots is needed to calculate the average score per
+    # fantasy player
     continue_program = True
     while continue_program:
         try:
@@ -48,13 +49,6 @@ def main():
             print("must be in numerical form")
 
     spots = qb + rb + wr + te + flex
-    continue_program = True
-    while continue_program:
-        try:
-            yards = int(input("number of yards passed/rushed/received:"))
-            break
-        except ValueError:
-            print("Error. Must be a whole number")
     print("Player Spots", spots)
     # Main scoring difference in leagues is based upon how many times a player
     # -cont., catches a ball. Catching a ball is thought to be more of a skill
@@ -79,46 +73,25 @@ def main():
     # QBs throw more touchdowns comparatively, so passing touchdowns are worth
     # less
     pts_per_passing_td = 6 // 1.5
-    print("[Player #1: Point Calculator]")
-    print("Yards", yards)
     # every 10 yards is 1 point
     # QBs accumulate more yards than other positions
     # So passing yards are worth less than receiving/rushing yards
-    rush_yard_points = float(yards / 10)
-    print(rush_yard_points, "points - rushing")
-    pts_per_passing_yards = yards // 20
-    print(pts_per_passing_yards, "points- passing")
-    receiving_yard_points = float(yards / 10)
-    print(receiving_yard_points, "points - receiving ")
-    while continue_program:
-        try:
-            tds = int(input("How many touchdowns did the player score?:"))
-            break
-        except ValueError:
-            print("must be numerical value")
+    tds = 0
     touchdown_points = tds * td
-    while continue_program:
-        try:
-            receptions = int(
-                input("How many times did the player catch the ball?"))
-            break
-        except ValueError:
-            print("must be numerical value")
     # ppr points are the points per reception made. PPR value will depend on
     # the randomly selected scoring format from earlier in the program
+    receptions = 0
     ppr_points = r * receptions
     passing_touchdown_points = pts_per_passing_td * tds
     # total points adds touchdowns,yards,and receptions(if player catches the
     # ball)
-    print("Scores: Based on position")
+    pts_per_passing_yards = 0
+    receiving_yard_points = 0
+    rush_yard_points = 0
     total_points_for_wr = touchdown_points + receiving_yard_points + ppr_points
     total_points_for_rb = touchdown_points + rush_yard_points + ppr_points
     total_points_for_qb = passing_touchdown_points + pts_per_passing_yards
     total_points_for_te = touchdown_points + receiving_yard_points + ppr_points
-    print(total_points_for_wr, "Wr")
-    print(total_points_for_rb, "Rb")
-    print(total_points_for_qb, "Qb")
-    print(total_points_for_te, "Te")
     continue_program = True
     # User interface selection menu
     while continue_program:
@@ -127,7 +100,7 @@ def main():
             print('[1. Point calculator: Entire Team]')
             print("[2. Sit/start]")
             print("[3.quit]")
-            # calculates fantasy player scores based on roster spots
+            # calculates fantasy player scores based on number of roster spots
             user_choice = int(input())
             if user_choice == 1:
                 n = 0
@@ -137,22 +110,23 @@ def main():
                             try:
                                 yards = float(input(
                                     "enter yards receiving/passing/rushing: "))
+                                print(yards)
+                                rush_yard_points = float(yards / 10)
+                                print(rush_yard_points, "points - rushing")
+                                pts_per_passing_yards = yards // 20
+                                print(pts_per_passing_yards, "points- passing")
+                                receiving_yard_points = float(yards / 10)
+                                print(receiving_yard_points,
+                                      "points - receiving ")
+                                touchdown_points = tds * td
+                                ppr_points = r * receptions
                                 break
                             except ValueError:
                                 print("Please input numerical value for yards")
-                        print(yards)
                         # every 10 yards is 1 point
                         # QBs accumulate more yards than other positions
                         # So passing yards are worth less than receiving/
                         # rushing yards
-                        rush_yard_points = float(yards / 10)
-                        print(rush_yard_points, "points - rushing")
-                        pts_per_passing_yards = yards // 20
-                        print(pts_per_passing_yards, "points- passing")
-                        receiving_yard_points = float(yards / 10)
-                        print(receiving_yard_points, "points - receiving ")
-                        touchdown_points = tds * td
-                        ppr_points = r * receptions
                         while continue_program:
                             try:
                                 tds = int(input("Enter touchdowns scored"))
@@ -171,7 +145,8 @@ def main():
                         # (if player catches the ball)
                         print("Scores: Based on position")
                         total_points_for_wr = touchdown_points + \
-                                              receiving_yard_points + ppr_points
+                                              receiving_yard_points + \
+                                              ppr_points
                         total_points_for_rb = touchdown_points + \
                                               rush_yard_points + ppr_points
                         total_points_for_qb = passing_touchdown_points + \
@@ -195,30 +170,21 @@ def main():
                 # in this case  the threshold is the average points per team
                 print("[sit - start:]")
                 while continue_program:
-                    n = 0
                     try:
+                        positions = ["Rb", "rb", "RB", "QB", "Qb", "qb", "WR",
+                                     "wr", "Wr", "TE", "Te", "te"]
                         start_selector = input(str("enter position"))
-                    except ValueError:
-                        print("Please type using alphabet")
-                    if n == 0:
-                        if len(start_selector) > 2:
-                            print("Type in position by abbreviation")
-                        elif len(start_selector) == 2:
-                            n += 1
+                        if start_selector not in positions:
+                            print("Please type the positional abbreviation")
+                            while continue_program:
+                                try:
+                                    break
+                                except ValueError:
+                                    print("must be valid position")
                         else:
-                            print("Please enter correct position")
-                    if n >= 1:
-                        break
-                positions = ["Rb", "RB", "RB", "QB", "Qb", "qb", "WR",
-                             "wr", "Wr", "TE", "Te", "te"]
-                if start_selector not in positions:
-                    print("Please type in valid position")
-                    while continue_program:
-                        try:
-                            input("Enter corrected postion")
                             break
-                        except ValueError:
-                            print("must be valid position")
+                    except ValueError:
+                        print("Error. Please correct input for position")
                 # Reference:https://www.youtube.com/watch?v=v_SfdDk3Wyk
                 # "How to take a user
                 # input for list in python
@@ -235,55 +201,76 @@ def main():
                 total_players = len(points)
                 average_points = sum_of_points / total_players
                 print(average_points)
+                # reference for stdev and import stats
+                # https://www.geeksforgeeks.org/python-statistics-stdev/
                 stdev = statistics.pstdev(points)
                 # stdev is used here as a factor to gauge the performance
                 # of the fantasy player in comparison to the average points
                 # scored per player
+                # Stdevs above the mean is used to analyze start potential
+                # of player. one standard deviation above is considered above
+                # average
+                
+                start_selector = ""
                 if start_selector == "qb" or "QB":
                     if total_points_for_qb >= average_points:
                         if total_points_for_qb >= average_points + stdev:
                             score = "Above Average - start-able"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_qb >= average_points + stdev / 2:
                             score = "Average - startable"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_qb >= average_points:
                             score = "start if no other option"
+                            print("_____your player start/sit:_______", score)
                     else:
                         score = "Must sit"
+                        print("_____your player start/sit:_______", score)
                 if start_selector == "rb" or "RB":
                     if total_points_for_rb >= average_points:
                         if total_points_for_rb >= average_points + stdev:
                             score = "Above Average - start-able"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_rb >= average_points + stdev / 2:
                             score = "Average - startable"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_rb >= average_points:
                             score = "start if no other option"
+                            print("_____your player start/sit:_______", score)
                     else:
                         score = "Must sit"
+                        print("_____your player start/sit:_______", score)
                 if start_selector == "wr" or "WR":
                     if total_points_for_wr >= average_points:
                         if total_points_for_wr >= average_points + stdev:
                             score = "Above Average - start-able"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_wr >= average_points + stdev / 2:
                             score = "Average - startable"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_wr >= average_points:
                             score = "start if no other option"
+                            print("_____your player start/sit:_______", score)
                     else:
                         score = "Must sit"
+                        print("_____your player start/sit:_______", score)
                 if start_selector == "te" or "TE":
                     if total_points_for_te > average_points / 2:
                         if total_points_for_te >= average_points / 2 + stdev:
                             score = "Above Average - start-able"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_te >= average_points / 2 + \
                                 stdev / 2:
                             score = "Average - startable"
+                            print("_____your player start/sit:_______", score)
                         elif total_points_for_te >= average_points / 2 - stdev:
                             score = "start if no other option"
+                            print("_____your player start/sit:_______", score)
                     else:
                         score = "Must sit"
+                        print("_____your player start/sit:_______", score)
                 print("Your average points per player is: ", average_points)
                 print("The standard deviation of points is", stdev)
-                print(start_selector)
-                print("_____your player start/sit:_______", score)
                 print(total_points_for_te, "Te")
                 print(total_points_for_rb, "Rb")
                 print(total_points_for_qb, "Qb")
@@ -310,3 +297,4 @@ def main():
 
 
 main()
+
