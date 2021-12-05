@@ -171,14 +171,14 @@ def main():
                         # (if player catches the ball)
                         print("Scores: Based on position")
                         total_points_for_wr = touchdown_points + \
-                                            receiving_yard_points + ppr_points
+                                              receiving_yard_points + ppr_points
                         total_points_for_rb = touchdown_points + \
-                                            rush_yard_points + ppr_points
+                                              rush_yard_points + ppr_points
                         total_points_for_qb = passing_touchdown_points + \
-                                            pts_per_passing_yards
+                                              pts_per_passing_yards
                         total_points_for_te = touchdown_points + \
-                                            receiving_yard_points + \
-                                            ppr_points
+                                              receiving_yard_points + \
+                                              ppr_points
                         print(total_points_for_wr, "Wr")
                         print(total_points_for_rb, "Rb")
                         print(total_points_for_qb, "Qb")
@@ -204,9 +204,21 @@ def main():
                         if len(start_selector) > 2:
                             print("Type in position by abbreviation")
                         elif len(start_selector) == 2:
-                            n = + 1
+                            n += 1
+                        else:
+                            print("Please enter correct position")
                     if n >= 1:
                         break
+                positions = ["Rb", "RB", "RB", "QB", "Qb", "qb", "WR",
+                             "wr", "Wr", "TE", "Te", "te"]
+                if start_selector not in positions:
+                    print("Please type in valid position")
+                    while continue_program:
+                        try:
+                            input("Enter corrected postion")
+                            break
+                        except ValueError:
+                            print("must be valid position")
                 # Reference:https://www.youtube.com/watch?v=v_SfdDk3Wyk
                 # "How to take a user
                 # input for list in python
@@ -292,7 +304,7 @@ def main():
                 return
             else:
                 if user_choice not in range(1, 3):
-                    print("not in range")
+                    print("input not in range")
         except ValueError:
             print("must be numerical value")
 
